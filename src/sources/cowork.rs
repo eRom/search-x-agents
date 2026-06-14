@@ -4,11 +4,11 @@ use std::io::BufRead;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
-use crate::sources::{
-    get_snippet, is_ripgrep_available, matches_all_terms, parse_rg_line,
-    warn_ripgrep_not_available, DeepMatch, SessionSource,
-};
 use crate::DateRange;
+use crate::sources::{
+    DeepMatch, SessionSource, get_snippet, is_ripgrep_available, matches_all_terms, parse_rg_line,
+    warn_ripgrep_not_available,
+};
 
 const MAX_MATCHES_PER_SESSION: usize = 2;
 
@@ -22,11 +22,7 @@ impl SessionSource for CoworkSource {
             .join("Application Support")
             .join("Claude")
             .join("local-agent-mode-sessions");
-        if dir.exists() {
-            vec![dir]
-        } else {
-            vec![]
-        }
+        if dir.exists() { vec![dir] } else { vec![] }
     }
 
     fn search(
@@ -307,9 +303,7 @@ fn search_cowork_rust(query: &str, base: &Path, date_range: &DateRange) -> Vec<D
                     seen_sessions,
                     query,
                 );
-            } else if file_type.is_file()
-                && path.file_name().is_some_and(|n| n == "audit.jsonl")
-            {
+            } else if file_type.is_file() && path.file_name().is_some_and(|n| n == "audit.jsonl") {
                 let session_id = path
                     .parent()
                     .and_then(|p| p.file_name())

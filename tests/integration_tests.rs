@@ -7,7 +7,7 @@ fn fixtures_dir() -> PathBuf {
 }
 
 fn binary_path() -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("target/debug/search-cross-agents")
+    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("target/debug/search-x-agents")
 }
 
 /// Build the binary before running tests
@@ -314,4 +314,3 @@ mod query_matching {
         assert!(openclaw_content.contains("audit"));
     }
 }
-

@@ -4,11 +4,11 @@ use std::io::BufRead;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
-use crate::sources::{
-    get_snippet, is_ripgrep_available, matches_all_terms, parse_rg_line,
-    warn_ripgrep_not_available, DeepMatch, SessionSource,
-};
 use crate::DateRange;
+use crate::sources::{
+    DeepMatch, SessionSource, get_snippet, is_ripgrep_available, matches_all_terms, parse_rg_line,
+    warn_ripgrep_not_available,
+};
 
 const MAX_MATCHES_PER_SESSION: usize = 2;
 
@@ -98,9 +98,7 @@ fn load_codex_metadata(base: &Path) -> HashMap<String, (String, String)> {
             }
             if file_type.is_dir() {
                 walk(&path, meta);
-            } else if file_type.is_file()
-                && path.extension().is_some_and(|e| e == "jsonl")
-            {
+            } else if file_type.is_file() && path.extension().is_some_and(|e| e == "jsonl") {
                 let session_id = path
                     .file_stem()
                     .and_then(|s| s.to_str())
@@ -112,21 +110,20 @@ fn load_codex_metadata(base: &Path) -> HashMap<String, (String, String)> {
                 if let Ok(content) = fs::read_to_string(&path)
                     && let Some(first_line) = content.lines().next()
                     && let Ok(record) = serde_json::from_str::<serde_json::Value>(first_line)
+                    && record.get("type").and_then(|t| t.as_str()) == Some("session_meta")
                 {
-                    if record.get("type").and_then(|t| t.as_str()) == Some("session_meta") {
-                        let cwd = record
-                            .get("payload")
-                            .and_then(|p| p.get("cwd"))
-                            .and_then(|c| c.as_str())
-                            .unwrap_or("")
-                            .to_string();
-                        let timestamp = record
-                            .get("timestamp")
-                            .and_then(|t| t.as_str())
-                            .unwrap_or("")
-                            .to_string();
-                        meta.insert(session_id, (cwd, timestamp));
-                    }
+                    let cwd = record
+                        .get("payload")
+                        .and_then(|p| p.get("cwd"))
+                        .and_then(|c| c.as_str())
+                        .unwrap_or("")
+                        .to_string();
+                    let timestamp = record
+                        .get("timestamp")
+                        .and_then(|t| t.as_str())
+                        .unwrap_or("")
+                        .to_string();
+                    meta.insert(session_id, (cwd, timestamp));
                 }
             }
         }
@@ -283,9 +280,7 @@ fn search_codex_rust(query: &str, base: &Path, date_range: &DateRange) -> Vec<De
                     seen_sessions,
                     query,
                 );
-            } else if file_type.is_file()
-                && path.extension().is_some_and(|e| e == "jsonl")
-            {
+            } else if file_type.is_file() && path.extension().is_some_and(|e| e == "jsonl") {
                 let session_id = path
                     .file_stem()
                     .and_then(|s| s.to_str())

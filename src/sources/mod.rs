@@ -2,16 +2,15 @@ use std::path::{Path, PathBuf};
 use std::process::Command;
 use std::sync::OnceLock;
 
-
 use crate::DateRange;
 
-pub mod claude;
-pub mod openclaw;
-pub mod pi;
-pub mod codex;
 pub mod antigravity;
+pub mod claude;
+pub mod codex;
 pub mod cowork;
 pub mod hermes;
+pub mod openclaw;
+pub mod pi;
 
 const MAX_SNIPPET_LEN: usize = 200;
 
@@ -173,7 +172,11 @@ pub fn parse_rg_line(line: &str) -> Option<(PathBuf, serde_json::Value)> {
     Some((path, value))
 }
 
-pub fn find_jsonl_files(base: &Path, exclude_subagents: bool, exclude_deleted: bool) -> Vec<PathBuf> {
+pub fn find_jsonl_files(
+    base: &Path,
+    exclude_subagents: bool,
+    exclude_deleted: bool,
+) -> Vec<PathBuf> {
     let mut files = Vec::new();
 
     fn walk_dir(

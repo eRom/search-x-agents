@@ -4,12 +4,12 @@ use std::io::BufRead;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
-use crate::sources::{
-    extract_content_array, find_jsonl_files, get_snippet, is_ripgrep_available,
-    matches_all_terms, parse_rg_line, session_id_from_path, warn_ripgrep_not_available, DeepMatch,
-    SessionSource,
-};
 use crate::DateRange;
+use crate::sources::{
+    DeepMatch, SessionSource, extract_content_array, find_jsonl_files, get_snippet,
+    is_ripgrep_available, matches_all_terms, parse_rg_line, session_id_from_path,
+    warn_ripgrep_not_available,
+};
 
 const MAX_MATCHES_PER_SESSION: usize = 2;
 
@@ -27,11 +27,7 @@ impl SessionSource for PiSource {
             .join(".pi")
             .join("agent")
             .join("sessions");
-        if dir.exists() {
-            vec![dir]
-        } else {
-            vec![]
-        }
+        if dir.exists() { vec![dir] } else { vec![] }
     }
 
     fn search(

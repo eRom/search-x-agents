@@ -1,8 +1,8 @@
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 
-use crate::sources::{get_snippet, matches_all_terms, DeepMatch, SessionSource};
 use crate::DateRange;
+use crate::sources::{DeepMatch, SessionSource, get_snippet, matches_all_terms};
 
 const MAX_MATCHES_PER_SESSION: usize = 2;
 
@@ -14,11 +14,7 @@ impl HermesSource {
             .expect("Cannot determine home directory")
             .join(".hermes")
             .join("state.db");
-        if db.exists() {
-            Some(db)
-        } else {
-            None
-        }
+        if db.exists() { Some(db) } else { None }
     }
 }
 
@@ -86,14 +82,26 @@ fn search_hermes(
     }
 
     // Try FTS5 fast path first
-    let results = search_hermes_fts(db_path, query, &query_terms_lower, project_filter, date_range);
+    let results = search_hermes_fts(
+        db_path,
+        query,
+        &query_terms_lower,
+        project_filter,
+        date_range,
+    );
 
     if !results.is_empty() {
         return results;
     }
 
     // Fallback: scan via LIKE
-    search_hermes_like(db_path, query, &query_terms_lower, project_filter, date_range)
+    search_hermes_like(
+        db_path,
+        query,
+        &query_terms_lower,
+        project_filter,
+        date_range,
+    )
 }
 
 fn search_hermes_fts(
@@ -196,7 +204,11 @@ fn search_hermes_fts(
             continue;
         }
 
-        let project_path = if cwd.is_empty() { "unknown".to_string() } else { cwd };
+        let project_path = if cwd.is_empty() {
+            "unknown".to_string()
+        } else {
+            cwd
+        };
 
         matches.push(DeepMatch {
             source: "Hermes".to_string(),
@@ -313,7 +325,11 @@ fn search_hermes_like(
             continue;
         }
 
-        let project_path = if cwd.is_empty() { "unknown".to_string() } else { cwd };
+        let project_path = if cwd.is_empty() {
+            "unknown".to_string()
+        } else {
+            cwd
+        };
 
         matches.push(DeepMatch {
             source: "Hermes".to_string(),

@@ -4,11 +4,11 @@ use std::io::BufRead;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
-use crate::sources::{
-    get_snippet, is_ripgrep_available, matches_all_terms, parse_rg_line,
-    warn_ripgrep_not_available, DeepMatch, SessionSource,
-};
 use crate::DateRange;
+use crate::sources::{
+    DeepMatch, SessionSource, get_snippet, is_ripgrep_available, matches_all_terms, parse_rg_line,
+    warn_ripgrep_not_available,
+};
 
 const MAX_MATCHES_PER_SESSION: usize = 2;
 
@@ -56,12 +56,12 @@ fn extract_text_antigravity(value: &serde_json::Value) -> String {
     // Tool calls args (contain useful text like file contents, commands)
     if let Some(tool_calls) = value.get("tool_calls").and_then(|t| t.as_array()) {
         for tc in tool_calls {
-            if let Some(args) = tc.get("args") {
-                if let Some(obj) = args.as_object() {
-                    for (_key, val) in obj {
-                        if let Some(s) = val.as_str() {
-                            texts.push(s.to_string());
-                        }
+            if let Some(args) = tc.get("args")
+                && let Some(obj) = args.as_object()
+            {
+                for (_key, val) in obj {
+                    if let Some(s) = val.as_str() {
+                        texts.push(s.to_string());
                     }
                 }
             }
@@ -129,9 +129,9 @@ fn search_antigravity(query: &str, base: &Path, date_range: &DateRange) -> Vec<D
         // Session ID is the UUID directory two levels above the transcript file
         // path: <brain>/<uuid>/.system_generated/logs/transcript.jsonl
         let session_id = path
-            .parent()       // logs/
-            .and_then(|p| p.parent())  // .system_generated/
-            .and_then(|p| p.parent())  // <uuid>/
+            .parent() // logs/
+            .and_then(|p| p.parent()) // .system_generated/
+            .and_then(|p| p.parent()) // <uuid>/
             .and_then(|p| p.file_name())
             .and_then(|n| n.to_str())
             .unwrap_or("")
@@ -163,7 +163,6 @@ fn search_antigravity(query: &str, base: &Path, date_range: &DateRange) -> Vec<D
         if !date_range.contains(&timestamp) {
             continue;
         }
-
 
         matches.push(DeepMatch {
             source: "Antigravity".to_string(),
@@ -216,7 +215,14 @@ fn search_antigravity_rust(query: &str, base: &Path, date_range: &DateRange) -> 
                 if is_hidden && path.file_name().is_some_and(|n| n != ".system_generated") {
                     continue;
                 }
-                walk_search(&path, query_terms_lower, date_range, matches, seen_sessions, query);
+                walk_search(
+                    &path,
+                    query_terms_lower,
+                    date_range,
+                    matches,
+                    seen_sessions,
+                    query,
+                );
             } else if file_type.is_file()
                 && path.extension().is_some_and(|e| e == "jsonl")
                 && path
@@ -270,7 +276,6 @@ fn search_antigravity_rust(query: &str, base: &Path, date_range: &DateRange) -> 
                         continue;
                     }
 
-
                     matches.push(DeepMatch {
                         source: "Antigravity".to_string(),
                         session_id: session_id.clone(),
@@ -285,6 +290,13 @@ fn search_antigravity_rust(query: &str, base: &Path, date_range: &DateRange) -> 
         }
     }
 
-    walk_search(base, &query_terms_lower, date_range, &mut matches, &mut seen_sessions, query);
+    walk_search(
+        base,
+        &query_terms_lower,
+        date_range,
+        &mut matches,
+        &mut seen_sessions,
+        query,
+    );
     matches
 }

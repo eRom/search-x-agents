@@ -5,14 +5,9 @@ use clap::Parser;
 use serde::Serialize;
 
 use crate::sources::{
-    search_all_sources, DeepMatch, SessionSource,
-    claude::ClaudeSource,
-    openclaw::OpenClawSource,
-    pi::PiSource,
-    codex::CodexSource,
-    antigravity::AntigravitySource,
-    cowork::CoworkSource,
-    hermes::HermesSource,
+    DeepMatch, SessionSource, antigravity::AntigravitySource, claude::ClaudeSource,
+    codex::CodexSource, cowork::CoworkSource, hermes::HermesSource, openclaw::OpenClawSource,
+    pi::PiSource, search_all_sources,
 };
 
 // ─── Constants ──────────────────────────────────────────────────────
@@ -182,10 +177,16 @@ fn parse_human_date(s: &str) -> Result<ParsedDate, String> {
         });
     }
     if let Some(dt) = try_parse_ago(&lower, today) {
-        return Ok(ParsedDate { dt, date_only: true });
+        return Ok(ParsedDate {
+            dt,
+            date_only: true,
+        });
     }
     if let Some(dt) = try_parse_last(&lower, today) {
-        return Ok(ParsedDate { dt, date_only: true });
+        return Ok(ParsedDate {
+            dt,
+            date_only: true,
+        });
     }
     if let Ok(date) = NaiveDate::parse_from_str(trimmed, "%Y-%m-%d") {
         return Ok(ParsedDate {
@@ -308,7 +309,13 @@ fn print_results(matches: &[DeepMatch], query: &str, limit: usize) {
 fn build_sources(cli: &Cli) -> Vec<Box<dyn SessionSource + '_>> {
     let mut sources: Vec<Box<dyn SessionSource>> = Vec::new();
 
-    let any_flag = cli.claude || cli.openclaw || cli.codex || cli.pi || cli.antigravity || cli.cowork || cli.hermes;
+    let any_flag = cli.claude
+        || cli.openclaw
+        || cli.codex
+        || cli.pi
+        || cli.antigravity
+        || cli.cowork
+        || cli.hermes;
     let all = !any_flag;
 
     if all || cli.claude {
