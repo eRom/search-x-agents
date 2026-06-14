@@ -84,13 +84,6 @@ search-x-agents "refactor" --since "last week"
 ## Options
 | args | description |
 | --- | --- |
-| --claude             | Search Claude Code sessions |
-| --openclaw           | Search OpenClaw sessions |
-| --codex              | Search Codex sessions |
-| --pi                 | Search Pi sessions |
-| --antigravity        | Search Antigravity sessions |
-| --cowork             | Search Cowork sessions |
-| --hermes             | Search Hermes sessions |
 | --limit <LIMIT>      | Maximum results to show [default: 20] |
 | --project <PROJECT>  | Filter to sessions from projects matching this substring |
 | --agent <AGENT>      | OpenClaw agent to search (default: main) [default: main] |
@@ -105,7 +98,6 @@ search-x-agents "refactor" --since "last week"
 - [Key Files](_memory_/key-files.md)
 - [Patterns](_memory_/patterns.md)
 - [Gotchas](_memory_/gotchas.md)
-- [Changelog](CHANGELOG.md)
 
 ## License
 
