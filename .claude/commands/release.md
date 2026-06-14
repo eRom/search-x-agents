@@ -96,7 +96,8 @@ Wait ~30 seconds for the tag to propagate, then create the release. The CI workf
 gh release create "v$NEW" \
   --title "v$NEW" \
   --generate-notes \
-  --draft=false
+  --draft=false \
+  --latest
 ```
 
 ### 7. Monitor CI
