@@ -1,6 +1,6 @@
 [package]
 name = "search-x-agents"
-version = "0.7.0"
+version = "0.7.1"
 edition = "2024"
 description = "Fast CLI to search across agents session history"
 license = "MIT"
