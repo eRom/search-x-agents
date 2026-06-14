@@ -88,19 +88,7 @@ git push origin "$(git branch --show-current)"
 git push origin "v$NEW"
 ```
 
-### 6. Create GitHub Release (non-draft)
-
-Wait ~30 seconds for the tag to propagate, then create the release. The CI workflow (`release.yml`) will attach binaries once they're built.
-
-```bash
-gh release create "v$NEW" \
-  --title "v$NEW" \
-  --generate-notes \
-  --draft=false \
-  --latest
-```
-
-### 7. Monitor CI
+### 6. Monitor CI
 
 Announce the release URL and suggest watching the CI run:
 
