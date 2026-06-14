@@ -6,6 +6,8 @@
 
 Search across all your AI agent session histories. Fast. IA-friendly output.
 
+Built from [sinzin91/search-sessions](https://github.com/sinzin91/search-sessions) — fast CLI to search Claude Code and OpenClaw history.
+
 ## Why?
 
 Claude Code forgets. Codex forgets. Pi forgets. After a few sessions, you've lost context — that clever regex, the architecture decision, the API you debugged at 2am.
