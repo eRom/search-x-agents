@@ -1,6 +1,8 @@
 # search-x-agents
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+<p align="center">
+  <img src="assets/header.png" alt="search-sessions" width="600">
+</p>
 
 Search across all your AI agent session histories. Fast. IA-friendly output.
 
