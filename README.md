@@ -35,7 +35,7 @@ If no source flag is passed, all available agents are searched.
 YAML, designed to be parsed by LLMs:
 
 ```yaml
-cross_agent_search:
+search_x_agents:
   query: "tmux pane"
   total_matches: 35
   top_results:
