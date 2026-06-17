@@ -245,7 +245,7 @@ fn build_date_range(
 
 #[derive(Serialize)]
 struct SearchOutput {
-    cross_agent_search: SearchInner,
+    search_x_agents: SearchInner,
 }
 
 #[derive(Serialize)]
@@ -293,7 +293,7 @@ fn print_results(matches: &[DeepMatch], query: &str, limit: usize) {
         .collect();
 
     let output = SearchOutput {
-        cross_agent_search: SearchInner {
+        search_x_agents: SearchInner {
             query: query.to_string(),
             total_matches: total,
             top_results: results,
